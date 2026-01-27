@@ -103,7 +103,7 @@
 
 - name: Step 7 - Format namenode
   shell: |
-    nohup {{ hadoop_install_dir }}/current/bin/hdfs namenode -format -clusterId myapp-hdfs > {{ hadoop_install_dir }}/current/Format_namenode.log 2>&1 &
+    nohup {{ hadoop_install_dir }}/current/bin/hdfs namenode -format -clusterId {{ hdfs_cluster_id }} > {{ hadoop_install_dir }}/current/Format_namenode.log 2>&1 &
     sleep 20
   when: ansible_hostname == nn_server[0] or ansible_host  == nn_server[0]
 

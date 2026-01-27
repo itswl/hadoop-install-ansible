@@ -58,7 +58,7 @@
   when: hostvars[ansible_hostname].role == "server"
 
 - name: Step 10 - Import kerberos schema
-  shell: ldapadd -x -D "cn=config" -w changeme123 -f /tmp/cn\=kerberos.ldif
+  shell: ldapadd -x -D "cn=config" -w {{ ldap_password }} -f /tmp/cn\=kerberos.ldif
   when: hostvars[ansible_hostname].role == "server"
 
 - name: Step 11 - Restart openldap
@@ -84,13 +84,13 @@
     dest: kerberos.ldif
     mode: 0644
     content: |
-      dn: cn=kerberos,dc=example,dc=com
+      dn: cn=kerberos,dc={{ ldap_dc }},dc=com
       cn: kerberos
       objectClass: organizationalRole
   when: hostvars[ansible_hostname].role == "server"
 
 - name: Step 16 - Add kerberos dn
-  shell: ldapadd -x -D cn=admin,dc=example,dc=com -w changeme123 -f kerberos.ldif
+  shell: ldapadd -x -D cn=admin,dc={{ ldap_dc }},dc=com -w {{ ldap_password }} -f kerberos.ldif
   when: hostvars[ansible_hostname].role == "server"
 
 - name: Step 17 - Create kerberos database in ldap

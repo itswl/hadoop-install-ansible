@@ -23,7 +23,7 @@
   when: hostvars[ansible_hostname].role == "server"
 
 - name: Step 6 - Set admin password
-  shell: slappasswd -s changeme123
+  shell: slappasswd -s {{ ldap_password }}
   register: result
   when: hostvars[ansible_hostname].role == "server"
 
@@ -50,17 +50,17 @@
       dn: olcDatabase={1}monitor,cn=config
       changetype: modify
       replace: olcAccess
-      olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" read by dn.base="cn=admin,dc=example,dc=com" read by * none
+      olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" read by dn.base="cn=admin,dc={{ ldap_dc }},dc=com" read by * none
 
       dn: olcDatabase={2}hdb,cn=config
       changetype: modify
       replace: olcSuffix
-      olcSuffix: dc=example,dc=com
+      olcSuffix: dc={{ ldap_dc }},dc=com
 
       dn: olcDatabase={2}hdb,cn=config
       changetype: modify
       replace: olcRootDN
-      olcRootDN: cn=admin,dc=example,dc=com
+      olcRootDN: cn=admin,dc={{ ldap_dc }},dc=com
 
       dn: olcDatabase={2}hdb,cn=config
       changetype: modify
@@ -93,13 +93,13 @@
     dest: example.ldif
     mode: 0644
     content: |
-      dn: dc=example,dc=com
-      dc: example
+      dn: dc={{ ldap_dc }},dc=com
+      dc: {{ ldap_dc }}
       objectClass: top
       objectClass: domain
-      o: example
+      o: {{ ldap_dc }}
 
-      dn: cn=admin,dc=example,dc=com
+      dn: cn=admin,dc={{ ldap_dc }},dc=com
       objectClass: organizationalRole
       cn: admin
       description: LDAP admin
@@ -107,5 +107,5 @@
   when: hostvars[ansible_hostname].role == "server"
 
 - name: Step 13 - Exec example.ldif
-  shell: ldapadd -x -D cn=admin,dc=example,dc=com -w changeme123 -f example.ldif
+  shell: ldapadd -x -D cn=admin,dc={{ ldap_dc }},dc=com -w {{ ldap_password }} -f example.ldif
   when: hostvars[ansible_hostname].role == "server"

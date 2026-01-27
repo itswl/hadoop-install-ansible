@@ -1,7 +1,7 @@
 #!/bin/bash
 
-kadmin.local -q "xst -norandkey -k /etc/security/keytabs/myapp.keytab myapp"
-kadmin.local -q "xst -norandkey -k /etc/security/keytabs/myuser.keytab myuser"
+kadmin.local -q "xst -norandkey -k /etc/security/keytabs/{{ kerberos_user }}.keytab {{ kerberos_user }}"
+kadmin.local -q "xst -norandkey -k /etc/security/keytabs/{{ kerberos_secondary_user }}.keytab {{ kerberos_secondary_user }}"
 
 
 {% for host in groups['kerberos'] %}

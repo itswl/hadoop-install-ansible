@@ -1,6 +1,6 @@
 #!/bin/expect
 
-spawn keytool -keystore keystore -alias localhost -validity 9999 -genkey -keyalg RSA -keysize 2048 -dname "CN={{ ansible_hostname }}, OU=mobile, O=example, L=city, ST=state, C=cn"
+spawn keytool -keystore keystore -alias localhost -validity 9999 -genkey -keyalg RSA -keysize 2048 -dname "CN={{ ansible_hostname }}, OU={{ cert_ou }}, O={{ cert_org }}, L={{ cert_locality }}, ST={{ cert_state }}, C={{ cert_country }}"
 expect "Enter keystore password:  "
 send "123456\r"
 expect "Re-enter new password: "

@@ -46,7 +46,7 @@ hive_new_dir_name=hive-3.1.0
 hive_install_dir=/opt/bigdata/hive
 hiveserver2_proxy_user=myapp
 ##pg数据库信息
-pg_server=myapp-ha.postgres-operator.svc.cluster.local
+pg_server=postgres.example.local
 pg_port=5432
 pg_user=hive
 pg_password=your_password_here
@@ -74,4 +74,31 @@ kerberos_auth=False
 jdk_install_dir=/opt/bigdata/java
 java_package_name=jdk-8u321-linux-x64.tar.gz
 java_dir_name=jdk1.8.0_321
+
+##===========================================
+## 可自定义变量 (以下变量可根据实际需求修改)
+##===========================================
+
+## Kerberos 配置
+kerberos_realm=EXAMPLE.COM
+kerberos_domain=example.com
+kerberos_user=myapp
+kerberos_user_password=changeme
+kerberos_secondary_user=myuser
+kerberos_secondary_user_password=changeme
+
+## HDFS/YARN 集群标识
+hdfs_cluster_id=myapp-hdfs
+yarn_cluster_id=myapp-yarn
+
+## LDAP 配置
+ldap_dc=example
+ldap_password=changeme123
+
+## SSL 证书信息
+cert_org=example
+cert_locality=city
+cert_state=state
+cert_country=cn
+cert_ou=mobile
 

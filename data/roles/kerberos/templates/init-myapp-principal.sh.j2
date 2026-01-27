@@ -1,0 +1,15 @@
+#!/bin/expect
+
+spawn kadmin.local -q "addprinc {{ kerberos_user }}"
+expect "Enter password for principal \"{{ kerberos_user }}@{{ kerberos_realm }}\": "
+send "{{ kerberos_user_password }}\r"
+expect "Re-enter password for principal \"{{ kerberos_user }}@{{ kerberos_realm }}\": "
+send "{{ kerberos_user_password }}\r"
+expect eof
+
+spawn kadmin.local -q "addprinc {{ kerberos_secondary_user }}"
+expect "Enter password for principal \"{{ kerberos_secondary_user }}@{{ kerberos_realm }}\": "
+send "{{ kerberos_secondary_user_password }}\r"
+expect "Re-enter password for principal \"{{ kerberos_secondary_user }}@{{ kerberos_realm }}\": "
+send "{{ kerberos_secondary_user_password }}\r"
+expect eof

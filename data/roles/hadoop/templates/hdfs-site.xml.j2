@@ -41,11 +41,11 @@
 
     <property>
         <name>dfs.nameservices</name>
-        <value>myapp-hdfs</value>
+        <value>{{ hdfs_cluster_id }}</value>
     </property>
 
     <property>
-        <name>dfs.ha.namenodes.myapp-hdfs</name>
+        <name>dfs.ha.namenodes.{{ hdfs_cluster_id }}</name>
         <value>{% for host in nn_server -%}
             nn{{ loop.index }}{% if not loop.last %},{% endif %}
         {%- endfor %}</value>
@@ -53,12 +53,12 @@
 
 {% for host in nn_server %}
     <property>
-        <name>dfs.namenode.rpc-address.myapp-hdfs.nn{{ loop.index }}</name>
+        <name>dfs.namenode.rpc-address.{{ hdfs_cluster_id }}.nn{{ loop.index }}</name>
         <value>{{ host }}:8020</value>
     </property>
 
     <property>
-        <name>dfs.namenode.http-address.myapp-hdfs.nn{{ loop.index }}</name>
+        <name>dfs.namenode.http-address.{{ hdfs_cluster_id }}.nn{{ loop.index }}</name>
         <value>{{ host }}:9870</value>
     </property>
 {% if not loop.last %}
@@ -70,11 +70,11 @@
         <name>dfs.namenode.shared.edits.dir</name>
         <value>qjournal://{% for host in nn_server -%}
             {{ host }}:8485{% if not loop.last %};{% endif %}
-        {%- endfor %}/myapp-hdfs</value>
+        {%- endfor %}/{{ hdfs_cluster_id }}</value>
     </property>
 
     <property>
-        <name>dfs.client.failover.proxy.provider.myapp-hdfs</name>
+        <name>dfs.client.failover.proxy.provider.{{ hdfs_cluster_id }}</name>
         <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
     </property>
 
@@ -114,7 +114,7 @@
 
 {% for host in nn_server %}
     <property>
-        <name>dfs.namenode.https-address.myapp-hdfs.nn{{ loop.index }}</name>
+        <name>dfs.namenode.https-address.{{ hdfs_cluster_id }}.nn{{ loop.index }}</name>
         <value>{{ host }}:9871</value>
     </property>
 {% if not loop.last %}
@@ -125,7 +125,7 @@
 {% if kerberos_auth %}
     <property>
     	<name>dfs.namenode.kerberos.principal</name>
-    	<value>nn/_HOST@EXAMPLE.COM</value>
+    	<value>nn/_HOST@{{ kerberos_realm }}</value>
     </property>
 
     <property>
@@ -135,7 +135,7 @@
 
     <property>
     	<name>dfs.namenode.kerberos.internal.spnego.principal</name>
-    	<value>HTTP/_HOST@EXAMPLE.COM</value>
+    	<value>HTTP/_HOST@{{ kerberos_realm }}</value>
     </property>
 
     <property>
@@ -160,7 +160,7 @@
 
     <property>
         <name>dfs.journalnode.kerberos.principal</name>
-        <value>jn/_HOST@EXAMPLE.COM</value>
+        <value>jn/_HOST@{{ kerberos_realm }}</value>
     </property>
 
     <property>
@@ -170,12 +170,12 @@
 
     <property>
     	<name>dfs.journalnode.kerberos.internal.spnego.principal</name>
-    	<value>HTTP/_HOST@EXAMPLE.COM</value>
+    	<value>HTTP/_HOST@{{ kerberos_realm }}</value>
     </property>
 
     <property>
     	<name>dfs.web.authentication.kerberos.principal</name>
-    	<value>HTTP/_HOST@EXAMPLE.COM</value>
+    	<value>HTTP/_HOST@{{ kerberos_realm }}</value>
     </property>
 
     <!--property>
@@ -185,7 +185,7 @@
 
     <property>
     	<name>dfs.datanode.kerberos.principal</name>
-    	<value>dn/_HOST@EXAMPLE.COM</value>
+    	<value>dn/_HOST@{{ kerberos_realm }}</value>
     </property>
 
     <property>

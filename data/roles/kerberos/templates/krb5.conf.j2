@@ -13,7 +13,7 @@ includedir /etc/krb5.conf.d/
  forwardable = true
  rdns = false
  pkinit_anchors = FILE:/etc/pki/tls/certs/ca-bundle.crt
- default_realm = EXAMPLE.COM
+ default_realm = {{ kerberos_realm }}
  #default_ccache_name = KEYRING:persistent:%{uid}
 
 [realms]
@@ -21,7 +21,7 @@ includedir /etc/krb5.conf.d/
 #  kdc = kerberos.example.com
 #  admin_server = kerberos.example.com
 # }
- EXAMPLE.COM = {
+ {{ kerberos_realm }} = {
   kdc = {% for host in groups['kerberos'] -%}
               {% if hostvars[host].role == "server" -%}
                 {{ host }}
@@ -40,15 +40,15 @@ includedir /etc/krb5.conf.d/
 [domain_realm]
 # .example.com = EXAMPLE.COM
 # example.com = EXAMPLE.COM
-.example.com = EXAMPLE.COM
-example.com = EXAMPLE.COM
+.{{ kerberos_domain }} = {{ kerberos_realm }}
+{{ kerberos_domain }} = {{ kerberos_realm }}
 
 [dbmodules]
  openldap_ldapconf = {
   db_library = kldap
   ldap_servers = ldapi:///
   ldap_service_password_file = /etc/krb5.ldap
-  ldap_kerberos_container_dn = cn=kerberos,dc=example,dc=com
-  ldap_kdc_dn = cn=admin,dc=example,dc=com
-  ldap_kadmind_dn = cn=admin,dc=example,dc=com
+  ldap_kerberos_container_dn = cn=kerberos,dc={{ ldap_dc }},dc=com
+  ldap_kdc_dn = cn=admin,dc={{ ldap_dc }},dc=com
+  ldap_kadmind_dn = cn=admin,dc={{ ldap_dc }},dc=com
  }

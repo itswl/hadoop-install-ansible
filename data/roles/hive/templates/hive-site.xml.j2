@@ -101,7 +101,7 @@
 
     <property>
         <name>hive.server2.authentication.kerberos.principal</name>
-        <value>hive/_HOST@EXAMPLE.COM</value>
+        <value>hive/_HOST@{{ kerberos_realm }}</value>
     </property>
 
     <property>
@@ -116,7 +116,7 @@
 
     <property>
         <name>hive.server2.authentication.spnego.principal</name>
-        <value>hive/_HOST@EXAMPLE.COM</value>
+        <value>hive/_HOST@{{ kerberos_realm }}</value>
     </property>
 
     <property>
@@ -126,7 +126,7 @@
 
     <property>
         <name>hive.metastore.kerberos.principal</name>
-        <value>hive/_HOST@EXAMPLE.COM</value>
+        <value>hive/_HOST@{{ kerberos_realm }}</value>
     </property>
 {% endif %}
 </configuration>
